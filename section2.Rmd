@@ -1,0 +1,18 @@
+---
+pagetitle: "Section 2"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+### Section 2-1
+
+### Section 2-2

@@ -1,0 +1,12 @@
+---
+title: "Section 3"
+author: "Jisu Baek"
+date: "10/12/2021"
+output: html_document
+---
+
+---
+title: "Section 3"
+---
+    
+Section 3
