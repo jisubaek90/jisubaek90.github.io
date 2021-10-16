@@ -3,7 +3,7 @@ pagetitle: "Section 2"
 output:
   html_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 4
     toc_float:
      collapsed: false
      smooth_scroll: false
@@ -13,6 +13,30 @@ output:
 
 <br><br><br>
 
-### Section 2-1
+## **Hotel Booking & Food Delivery Web App**
 
-### Section 2-2
+<img src="badges/badge_sql.svg" style="width:9.3%; border:0px solid; margin-right: 5px" align="left">
+<img src="badges/badge_r.svg" style="width:7.25%; border:0px solid; margin-right: 5px" align="left">
+<img src="badges/badge_shiny.svg" style="width:13%; border:0px solid; margin-right: 5px" align="left">
+
+<br><br>
+
+#### Live Demo
+
+For the live demo web application: [[Link](https://jparmar.shinyapps.io/Seoul/)]
+
+<br>
+
+#### Presentation Slides
+
+For the presentation slides: [[Link](files/shiny-app-hotel/Seoul_application.pdf)]
+
+<br>
+
+<p align="center">
+<img src="photo/hotel_seoul.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+
+#### Project Summary:

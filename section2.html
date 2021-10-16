@@ -327,16 +327,49 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="section1.html">Section1</a>
+  <a href="section6.html">In a nutshell</a>
 </li>
-<li>
-  <a href="section2.html">Section2</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Stat/Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section3.html">AirBnB Prediction Modeling</a>
+    </li>
+    <li>
+      <a href="section4.html">IBM Employee Retention Modeling</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="section3.html">Section3</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    DB/SQL
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section1.html">Music Generator App</a>
+    </li>
+    <li>
+      <a href="section2.html">Hotel Service App</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="section4.html">Section4</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section5.html">Disney+ Strategic Dashboard</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -379,11 +412,27 @@ div.tocify {
 
 <p><link rel="stylesheet" href="styles.css" type="text/css"></p>
 <p><br><br><br></p>
-<div id="section-2-1" class="section level3">
-<h3>Section 2-1</h3>
+<div id="hotel-booking-food-delivery-web-app" class="section level2">
+<h2><strong>Hotel Booking &amp; Food Delivery Web App</strong></h2>
+<p><img src="badges/badge_sql.svg" style="width:9.3%; border:0px solid; margin-right: 5px" align="left"> <img src="badges/badge_r.svg" style="width:7.25%; border:0px solid; margin-right: 5px" align="left"> <img src="badges/badge_shiny.svg" style="width:13%; border:0px solid; margin-right: 5px" align="left"></p>
+<p><br><br></p>
+<div id="live-demo" class="section level4">
+<h4>Live Demo</h4>
+<p>For the live demo web application: [<a href="https://jparmar.shinyapps.io/Seoul/">Link</a>]</p>
+<p><br></p>
 </div>
-<div id="section-2-2" class="section level3">
-<h3>Section 2-2</h3>
+<div id="presentation-slides" class="section level4">
+<h4>Presentation Slides</h4>
+<p>For the presentation slides: [<a href="files/shiny-app-hotel/Seoul_application.pdf">Link</a>]</p>
+<p><br></p>
+<p align="center">
+<img src="photo/hotel_seoul.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<p><br></p>
+</div>
+<div id="project-summary" class="section level4">
+<h4>Project Summary:</h4>
+</div>
 </div>
 
 
@@ -440,7 +489,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2,h3,h4",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

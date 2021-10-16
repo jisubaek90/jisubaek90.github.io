@@ -8,4 +8,9 @@ output: html_document
 
 <br>
 
-Jisu Baek
+<p align="center">
+<img src="photo/profile.jpeg" style="width:40%; border:0.5px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+My name is Jisu Baek and I am a candidate of MS in Applied Analytics at Coulmbia University. 

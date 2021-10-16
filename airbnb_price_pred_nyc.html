@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jisu Baek" />
+
+
+<title>AirBnB Price Prediction Modeling in NYC</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/tabwid-1.0.0/tabwid.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jisu Baek</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="section6.html">In a nutshell</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Stat/Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section3.html">AirBnB Prediction Modeling</a>
+    </li>
+    <li>
+      <a href="section4.html">IBM Employee Retention Modeling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    DB/SQL
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section1.html">Music Generator App</a>
+    </li>
+    <li>
+      <a href="section2.html">Hotel Service App</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="section5.html">Disney+ Strategic Dashboard</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fas fa-envelope"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/jisubaek90">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/jisubaek90">
+    <span class="fab fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/jisubaek/">
+    <span class="fab fa-linkedin-in"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">AirBnB Price Prediction Modeling in NYC</h1>
+<h4 class="author">Jisu Baek</h4>
+
+</div>
+
+
+<p><link rel="stylesheet" href="styles.css" type="text/css"></p>
+<div id="preprocessing-data-and-eda-exploratory-data-analysis" class="section level1">
+<h1>1. Preprocessing data and EDA (Exploratory Data Analysis)</h1>
+<pre class="r"><code># Read-in datasets
+train &lt;- read.csv(&quot;train.csv&quot;, na.strings = &quot;N/A&quot;) # 23313 x 96
+test &lt;- read.csv(&quot;test.csv&quot;, na.strings = &quot;N/A&quot;) # 5829 x 95
+
+# Remove unnecessary variables and variables with &gt;20 NA values
+train &lt;- train %&gt;% dplyr::select(-listing_url, -scrape_id, -last_scraped, -name, -summary, -space, -description, -experiences_offered, -neighborhood_overview, -notes, -transit, -access, -interaction, -house_rules, -thumbnail_url, -medium_url, -picture_url, -xl_picture_url, -host_id, -host_url, -host_name, -host_since, -host_location, -host_about, -host_acceptance_rate, -host_thumbnail_url, -host_picture_url, -host_neighbourhood, -host_verifications, -street, -neighbourhood, -city, -state, -zipcode, -market, -smart_location, -country_code, -country, -square_feet, -weekly_price, -monthly_price, -security_deposit, -cleaning_fee, -calendar_updated, -calendar_last_scraped, -first_review, -last_review, -license, -jurisdiction_names, -host_response_time, -host_response_rate, -neighbourhood_cleansed, -requires_license, -has_availability)
+
+# Re-categorizing variables whose the levels of categories are too small number of observations
+train$property_type &lt;- factor(ifelse(train$property_type == &quot;Apartment&quot;, &quot;Apartment&quot;, &quot;Non-Apartment&quot;))
+test$property_type &lt;- factor(ifelse(test$property_type == &quot;Apartment&quot;, &quot;Apartment&quot;, &quot;Non-Apartment&quot;))
+
+train$room_type &lt;- factor(train$room_type)
+test$room_type &lt;- factor(test$room_type)
+
+train$bed_type &lt;- factor(ifelse(train$bed_type == &quot;Real Bed&quot;, &quot;Real Bed&quot;, &quot;Non-Real Bed&quot;))
+test$bed_type &lt;- factor(ifelse(test$bed_type == &quot;Real Bed&quot;, &quot;Real Bed&quot;, &quot;Non-Real Bed&quot;))
+
+train$cancellation_policy &lt;- factor(ifelse(train$cancellation_policy %in% c(&quot;super_strict_30&quot;, &quot;super_strict_60&quot;), &quot;strict&quot;, train$cancellation_policy))
+test$cancellation_policy &lt;- factor(ifelse(test$cancellation_policy %in% c(&quot;super_strict_30&quot;, &quot;super_strict_60&quot;), &quot;strict&quot;, train$cancellation_policy))
+
+train$neighbourhood_group_cleansed &lt;- factor(ifelse(train$neighbourhood_group_cleansed == &quot;Manhattan&quot;, &quot;Manhattan&quot;, &quot;Non-Manhattan&quot;))
+test$neighbourhood_group_cleansed &lt;- factor(ifelse(test$neighbourhood_group_cleansed == &quot;Manhattan&quot;, &quot;Manhattan&quot;, &quot;Non-Manhattan&quot;))
+
+# Make the True/False variable numeric
+train$host_is_superhost &lt;- ifelse(train$host_is_superhost == &quot;t&quot;, 1, 0) 
+test$host_is_superhost &lt;- ifelse(test$host_is_superhost == &quot;t&quot;, 1, 0) 
+
+train$host_has_profile_pic &lt;- ifelse(train$host_has_profile_pic == &quot;t&quot;, 1, 0) 
+test$host_has_profile_pic &lt;- ifelse(test$host_has_profile_pic == &quot;t&quot;, 1, 0) 
+
+train$host_identity_verified &lt;- ifelse(train$host_identity_verified == &quot;t&quot;, 1, 0) 
+test$host_identity_verified &lt;- ifelse(test$host_identity_verified == &quot;t&quot;, 1, 0) 
+
+train$is_location_exact &lt;- ifelse(train$is_location_exact == &quot;t&quot;, 1, 0) 
+test$is_location_exact &lt;- ifelse(test$is_location_exact == &quot;t&quot;, 1, 0) 
+
+train$instant_bookable &lt;- ifelse(train$instant_bookable == &quot;t&quot;, 1, 0) 
+test$instant_bookable &lt;- ifelse(test$instant_bookable == &quot;t&quot;, 1, 0) 
+
+train$is_business_travel_ready &lt;- ifelse(train$is_business_travel_ready == &quot;t&quot;, 1, 0) 
+test$is_business_travel_ready &lt;- ifelse(test$is_business_travel_ready == &quot;t&quot;, 1, 0) 
+
+train$require_guest_profile_picture &lt;- ifelse(train$require_guest_profile_picture == &quot;t&quot;, 1, 0) 
+test$require_guest_profile_picture &lt;- ifelse(test$require_guest_profile_picture == &quot;t&quot;, 1, 0) 
+
+train$require_guest_phone_verification &lt;- ifelse(train$require_guest_phone_verification == &quot;t&quot;, 1, 0) 
+test$require_guest_phone_verification &lt;- ifelse(test$require_guest_phone_verification == &quot;t&quot;, 1, 0) 
+
+# Extracting amenities and count the number of amenities
+amenity_num &lt;- c()
+trim &lt;- function(x) gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, x)
+for (i in 1:length(train$amenities)) {
+  amenity_num[i] &lt;- trim(unlist(strsplit(train$amenities[i], &quot;,&quot;))) %&gt;% 
+    unique %&gt;%
+    gsub(&#39;\\{|\\}|&quot;\&quot;&#39;, &quot;&quot;, .) %&gt;%
+    length
+}
+train$amenities_num &lt;- amenity_num
+
+amenity_num &lt;- c()
+trim &lt;- function(x) gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, x)
+for (i in 1:length(test$amenities)) {
+  amenity_num[i] &lt;- trim(unlist(strsplit(test$amenities[i], &quot;,&quot;))) %&gt;% 
+    unique %&gt;%
+    gsub(&#39;\\{|\\}|&quot;\&quot;&#39;, &quot;&quot;, .) %&gt;%
+    length
+}
+test$amenities_num &lt;- amenity_num
+
+# Removing 14 observations whose outcome (price) is missing
+train &lt;- na.omit(train)
+
+price &lt;- train$price
+log.price &lt;- log(price)
+
+# Remove ID, price and amenities
+train &lt;- train %&gt;% dplyr::select(-id, -price, -amenities)
+train &lt;- train %&gt;% mutate(price, log.price)
+
+# Remove observations with infinite values after log-transformation of price
+train &lt;- train[-which(train$log.price == -Inf),]
+
+# Save the pre-processed dataset
+list.airbnb &lt;- list(train = train, test = test)
+dput(list.airbnb, &quot;airbnb_preprocessed&quot;)</code></pre>
+<pre class="r"><code># Load pre-processed dataset
+list.airbnb &lt;- dget(&quot;airbnb_preprocessed&quot;)
+train &lt;- list.airbnb$train 
+test &lt;- list.airbnb$test
+price &lt;- train$price
+log.price &lt;- train$log.price
+
+# Visually checked the relationship among variables
+# ggpairs(train)
+
+# Outcome variable check using histogram and normal q-q plot
+# png(paste0(&quot;./image/Fig_hist_qq.png&quot;), res = 200, height = 6, width = 6, units = &quot;in&quot;)
+par(mfrow = c(2,2))
+hist(train$price, breaks = &quot;FD&quot;, xlab = &quot;Price&quot;, main = &quot;Histogram: Price&quot;)
+qqnorm(train$price, pch = 1, frame = F, main = &quot;Normal Q-Q plot: Price&quot;)
+qqline(train$price, col = &quot;red&quot;, lwd = 2)
+hist(train$log.price, breaks = &quot;FD&quot;, xlab = &quot;log(Price)&quot;, main = &quot;Histogram: log(Price)&quot;)
+qqnorm(train$log.price, pch = 1, frame = F, main = &quot;Normal Q-Q plot: log(Price)&quot;)
+qqline(train$log.price, col = &quot;red&quot;, lwd = 2)</code></pre>
+<p><img src="airbnb_price_pred_nyc_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># dev.off() %&gt;% invisible()</code></pre>
+</div>
+<div id="feature-selection" class="section level1">
+<h1>2. Feature Selection</h1>
+<div id="univaraite-analysis" class="section level2">
+<h2>2-1. Univaraite Analysis</h2>
+<p>Univariate analysis was performed between <code>log.price</code> and each covariate in the dataset.</p>
+<pre class="r"><code># Distinguish factor variables from continuous variables
+fctr.vars &lt;- rep(0, ncol(train))
+fctr.idx &lt;- which(names(train) %in% c(&quot;host_is_superhost&quot;, &quot;host_has_profile_pic&quot;, &quot;host_identity_verified&quot;, &quot;neighbourhood_group_cleansed&quot;, &quot;is_location_exact&quot;, &quot;property_type&quot;, &quot;room_type&quot;, &quot;bed_type&quot;, &quot;instant_bookable&quot;, &quot;is_business_travel_ready&quot;, &quot;require_guest_profile_picture&quot;, &quot;require_guest_phone_verification&quot;, &quot;cancellation_policy&quot;))
+fctr.vars[fctr.idx] &lt;- 1
+
+# Generate a summary table to save the pvalues and Pearson&#39;s correlation
+smry.univar.df &lt;- data.frame(Variables = names(train)[-c(41,42)], 
+                             pval = NA,
+                             correlation = NA)
+
+# t-test / ANOVA and correlation check across the variables with the outcome
+for (i in 1:(ncol(train)-2)) {
+  if (fctr.vars[i] == 1) {
+    if (length(levels(factor(train[,names(train)[i]]))) == 2) {
+      grp1 &lt;- levels(factor(train[,names(train)[i]]))[1]
+      grp2 &lt;- levels(factor(train[,names(train)[i]]))[2]
+      pval.t &lt;- t.test(train$log.price[which(train[,names(train)[i]] == grp1)],
+                    train$log.price[which(train[,names(train)[i]] == grp2)])$p.val
+      smry.univar.df[i,2] &lt;- pval.t
+    } else if (length(levels(factor(train[,names(train)[i]]))) &gt; 2) {
+      grp &lt;- factor(train[,names(train)[i]])
+      pval.anova &lt;- anova(lm(train$log.price ~ grp))[1, &quot;Pr(&gt;F)&quot;]
+      smry.univar.df[i,2] &lt;- pval.anova
+    }
+  } else {
+    result &lt;- cor.test(train$log.price, train[,names(train)[i]])
+    pval.cor &lt;- result$p.value
+    cor.est &lt;- result$estimate
+    smry.univar.df[i,2] &lt;- pval.cor
+    smry.univar.df[i,3] &lt;- cor.est
+  }
+}
+
+# Formatting the p-values when the p-values were too small.
+fpval.txt &lt;- function (pval) {
+  pval &lt;- as.numeric(pval)
+  if (pval &lt; 0.001) 
+    pval.txt &lt;- &quot;&lt;0.001&quot;
+  else pval.txt &lt;- as.character(pval)
+  return(pval.txt)
+}
+
+# Formatting the univariate analysis summary table
+smry.univar.df.real &lt;- smry.univar.df
+smry.univar.df$pval &lt;- ifelse(smry.univar.df$pval &lt; 0.001, &quot;&lt;0.001&quot;, as.character(round(smry.univar.df$pval,3)))
+smry.univar.df$correlation &lt;- round(smry.univar.df$correlation, 3)
+
+smry.univar.df.print &lt;- smry.univar.df[which(smry.univar.df.real$pval &lt; 0.05),] %&gt;%
+  arrange(desc(correlation))
+
+train &lt;- train[,c(smry.univar.df$Variables, &quot;log.price&quot;)]
+regulartable(smry.univar.df.print) %&gt;% autofit() #%&gt;% save_as_image(., &quot;./image/Fig_univariate.png&quot;)</code></pre>
+<template id="2e57bc80-4f4f-4785-a2fe-c030888ce76c"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-15a2cc0a{}.cl-1595b8d0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1595eaee{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1595eb0c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-159651d2{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159651fa{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965204{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596520e{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596520f{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965218{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965222{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596522c{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965236{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965237{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596524a{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596524b{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965254{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596525e{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965268{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965272{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965273{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596527c{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965286{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965287{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965290{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596529a{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652a4{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652a5{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652ae{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652b8{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652c2{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652c3{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652cc{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652e0{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652e1{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652ea{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652f4{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652f5{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-159652fe{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965308{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965312{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596531c{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596531d{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965326{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965330{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596533a{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-15965344{width:71.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596534e{width:54.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1596534f{width:183.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-15a2cc0a'><thead><tr style="overflow-wrap:break-word;"><td class="cl-1596534f"><p class="cl-1595eaee"><span class="cl-1595b8d0">Variables</span></p></td><td class="cl-1596534e"><p class="cl-1595eaee"><span class="cl-1595b8d0">pval</span></p></td><td class="cl-15965344"><p class="cl-1595eb0c"><span class="cl-1595b8d0">correlation</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-159651fa"><p class="cl-1595eaee"><span class="cl-1595b8d0">accommodates</span></p></td><td class="cl-15965204"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159651d2"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.538</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159651fa"><p class="cl-1595eaee"><span class="cl-1595b8d0">beds</span></p></td><td class="cl-15965204"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159651d2"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.424</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652c3"><p class="cl-1595eaee"><span class="cl-1595b8d0">guests_included</span></p></td><td class="cl-159652e0"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652cc"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.357</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159651fa"><p class="cl-1595eaee"><span class="cl-1595b8d0">bedrooms</span></p></td><td class="cl-15965204"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159651d2"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.345</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965254"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_location</span></p></td><td class="cl-1596525e"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965268"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.202</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965254"><p class="cl-1595eaee"><span class="cl-1595b8d0">amenities_num</span></p></td><td class="cl-1596525e"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965268"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.182</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159651fa"><p class="cl-1595eaee"><span class="cl-1595b8d0">bathrooms</span></p></td><td class="cl-15965204"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159651d2"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.137</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1596533a"><p class="cl-1595eaee"><span class="cl-1595b8d0">extra_people</span></p></td><td class="cl-15965326"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965330"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.126</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965254"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_cleanliness</span></p></td><td class="cl-1596525e"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965268"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.094</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1596520e"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_rating</span></p></td><td class="cl-1596520f"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965218"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.078</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965222"><p class="cl-1595eaee"><span class="cl-1595b8d0">latitude</span></p></td><td class="cl-15965236"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-1596522c"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.073</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1596524b"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_accuracy</span></p></td><td class="cl-15965237"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-1596524a"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.050</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965254"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_communication</span></p></td><td class="cl-1596525e"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965268"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.042</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965272"><p class="cl-1595eaee"><span class="cl-1595b8d0">review_scores_checkin</span></p></td><td class="cl-15965273"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-1596527c"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.031</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">availability_365</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.024</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652a4"><p class="cl-1595eaee"><span class="cl-1595b8d0">number_of_reviews</span></p></td><td class="cl-159652a5"><p class="cl-1595eaee"><span class="cl-1595b8d0">0.003</span></p></td><td class="cl-1596529a"><p class="cl-1595eb0c"><span class="cl-1595b8d0">0.019</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">availability_30</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.026</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652ae"><p class="cl-1595eaee"><span class="cl-1595b8d0">reviews_per_month</span></p></td><td class="cl-159652b8"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652c2"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.044</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">availability_60</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.048</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">availability_90</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.057</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652c3"><p class="cl-1595eaee"><span class="cl-1595b8d0">calculated_host_listings_count</span></p></td><td class="cl-159652e0"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652cc"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.157</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652c3"><p class="cl-1595eaee"><span class="cl-1595b8d0">longitude</span></p></td><td class="cl-159652e0"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652cc"><p class="cl-1595eb0c"><span class="cl-1595b8d0">-0.339</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652ae"><p class="cl-1595eaee"><span class="cl-1595b8d0">host_is_superhost</span></p></td><td class="cl-159652b8"><p class="cl-1595eaee"><span class="cl-1595b8d0">0.028</span></p></td><td class="cl-159652c2"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652ea"><p class="cl-1595eaee"><span class="cl-1595b8d0">host_identity_verified</span></p></td><td class="cl-159652f4"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652e1"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652c3"><p class="cl-1595eaee"><span class="cl-1595b8d0">neighbourhood_group_cleansed</span></p></td><td class="cl-159652e0"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-159652cc"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965254"><p class="cl-1595eaee"><span class="cl-1595b8d0">is_location_exact</span></p></td><td class="cl-1596525e"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965268"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652fe"><p class="cl-1595eaee"><span class="cl-1595b8d0">property_type</span></p></td><td class="cl-159652f5"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965308"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-159652fe"><p class="cl-1595eaee"><span class="cl-1595b8d0">room_type</span></p></td><td class="cl-159652f5"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965308"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">bed_type</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965272"><p class="cl-1595eaee"><span class="cl-1595b8d0">instant_bookable</span></p></td><td class="cl-15965273"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-1596527c"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965290"><p class="cl-1595eaee"><span class="cl-1595b8d0">is_business_travel_ready</span></p></td><td class="cl-15965286"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-15965287"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1596524b"><p class="cl-1595eaee"><span class="cl-1595b8d0">cancellation_policy</span></p></td><td class="cl-15965237"><p class="cl-1595eaee"><span class="cl-1595b8d0">&lt;0.001</span></p></td><td class="cl-1596524a"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-15965312"><p class="cl-1595eaee"><span class="cl-1595b8d0">require_guest_phone_verification</span></p></td><td class="cl-1596531c"><p class="cl-1595eaee"><span class="cl-1595b8d0">0.013</span></p></td><td class="cl-1596531d"><p class="cl-1595eb0c"><span class="cl-1595b8d0"></span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="118a9336-ed16-41b3-ae50-be44760447c7"></div>
+<script>
+var dest = document.getElementById("118a9336-ed16-41b3-ae50-be44760447c7");
+var template = document.getElementById("2e57bc80-4f4f-4785-a2fe-c030888ce76c");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+</div>
+<div id="lasso" class="section level2">
+<h2>2-2. LASSO</h2>
+<pre class="r"><code># Dumy code categorical predictor variables
+x_vars &lt;- model.matrix(price ~ ., train[,-41])
+y_var &lt;- train$log.price
+lambda_seq &lt;- 10^seq(2, -2, by = -.1)
+
+# 5-fold cross validation to determine the best lambda
+set.seed(123)
+cv_output &lt;- cv.glmnet(x_vars, y_var, alpha = 1, lambda = lambda_seq, nfolds = 5)
+best_lam &lt;- cv_output$lambda.min
+
+# Rebuilding the model with the best lambda value identified
+lasso_best &lt;- glmnet(x_vars, y_var, alpha = 1, lambda = best_lam)
+# coef(lasso_best, best_lam)
+
+# 23 features + outcome variable (total 24 variables) selected in the train set
+best.vars &lt;- c(&quot;log.price&quot;, &quot;host_is_superhost&quot;, &quot;host_identity_verified&quot;, &quot;neighbourhood_group_cleansed&quot;, &quot;longitude&quot;,
+               &quot;property_type&quot;, &quot;room_type&quot;, &quot;accommodates&quot;, &quot;bathrooms&quot;, &quot;bedrooms&quot;, &quot;guests_included&quot;, 
+               &quot;extra_people&quot;, &quot;minimum_nights&quot;, &quot;availability_30&quot;, &quot;availability_365&quot;, &quot;review_scores_rating&quot;, 
+               &quot;review_scores_cleanliness&quot;, &quot;review_scores_location&quot;, &quot;review_scores_value&quot;, &quot;instant_bookable&quot;, 
+               &quot;is_business_travel_ready&quot;, &quot;calculated_host_listings_count&quot;, &quot;reviews_per_month&quot;, &quot;amenities_num&quot;)
+# length(best.vars) # 24
+train &lt;- train[,best.vars] %&gt;% as.data.frame()</code></pre>
+</div>
+</div>
+<div id="predictive-modeling" class="section level1">
+<h1>3. Predictive Modeling</h1>
+<div id="multiple-linear-regression" class="section level2">
+<h2>3-1. Multiple linear regression</h2>
+<pre class="r"><code>mod &lt;- lm(formula = log.price ~ ., data = train[,-1])
+predicted.prices &lt;- predict.lm(object = mod, newdata = test[,-1])
+submission &lt;- data.frame(id = test$id, price = exp(predicted.prices))
+write.csv(x = submission, file = &quot;Model 1 Predictions_MultipleLinearRegression.csv&quot;, row.names = FALSE)
+
+predicted.prices_train &lt;- predict.lm(object = mod, newdata = train[,-1])
+rmse.lr &lt;- RMSE(predicted.prices_train, train$log.price) %&gt;% round(3)
+r2.lr &lt;- R2(predicted.prices_train, train$log.price) %&gt;% round(3)</code></pre>
+</div>
+<div id="tree-with-tuning" class="section level2">
+<h2>3-2. Tree with tuning</h2>
+<pre class="r"><code>trControl = trainControl(method=&#39;cv&#39;,number = 5)
+tuneGrid = expand.grid(.cp = seq(from = 0.001,to = 0.1,by = 0.001))
+set.seed(123)
+cvModel = train(log.price~., data=train, method=&quot;rpart&quot;, trControl = trControl, tuneGrid = tuneGrid)
+# cvModel$results %&gt;% arrange(RMSE)
+cvTree = rpart(log.price ~ ., data = train, cp = cvModel$bestTune$cp)
+pred = predict(cvTree, newdata = test)
+submission &lt;- data.frame(id = test$id, price = exp(pred))
+write.csv(x = submission, file = &quot;Model 1 Predictions_TreeTuning.csv&quot;, row.names = FALSE)
+
+pred_train &lt;- predict(cvTree, newdata = train)
+rmse.tr &lt;- RMSE(pred_train, train$log.price)
+r2.tr &lt;- R2(pred_train, train$log.price)</code></pre>
+</div>
+<div id="random-forest" class="section level2">
+<h2>3-3. Random Forest</h2>
+<pre class="r"><code>set.seed(123)
+forest = randomForest(log.price ~ ., data = train, ntree = 1000)
+pred = predict(forest,newdata=test)
+submission &lt;- data.frame(id = test$id, price = exp(pred))
+write.csv(x = submission, file = &quot;Model 1 Predictions_RandomForest.csv&quot;, row.names = FALSE)
+
+# Plot the dot chart by importance of variables using Random Forest
+# png(paste0(&quot;./image/Fig_RF_varimpplot.png&quot;), res = 150, height = 6, width = 8, units = &quot;in&quot;)
+varImpPlot(forest, main = &quot;Random Forest (ntree = 1000)&quot;)</code></pre>
+<p><img src="airbnb_price_pred_nyc_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># dev.off() %&gt;% invisible()
+
+pred_train_rf &lt;- predict(forest, newdata = train)
+rmse.rf &lt;- RMSE(pred_train_rf, train$log.price)
+r2.rf &lt;- R2(pred_train_rf, train$log.price)</code></pre>
+</div>
+<div id="boosting-model" class="section level2">
+<h2>3-4. Boosting Model</h2>
+<pre class="r"><code>set.seed(123)
+boost = gbm(log.price ~ ., data=train, distribution=&quot;gaussian&quot;, n.trees = 500, interaction.depth = 2, shrinkage = 0.01)
+# summary(boost, plot = F)
+smry.bst &lt;- data.frame(vars = summary(boost, plot = F)$var, 
+                  rel.inf = summary(boost, plot = F)$rel.inf) %&gt;% filter(rel.inf &gt; 0.1) %&gt;% arrange(desc(rel.inf))
+smry.bst$vars &lt;- factor(smry.bst$vars, levels = rev(smry.bst$vars))
+
+# Plot the dot chart by importance of variables using Boosting model
+# png(paste0(&quot;./image/Fig_Boosting.png&quot;), res = 200, height = 4, width = 8, units = &quot;in&quot;)
+ggplot(smry.bst,
+       aes(x = rel.inf, y = vars)) + 
+  geom_point(size = 3) + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5, size = 15, face = &quot;bold&quot;),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = &quot;grey60&quot;, linetype = &quot;dashed&quot;)
+  ) + labs(title = &quot;Boosting Model&quot;) + xlab(&quot;Relative Influence&quot;) + ylab(&quot;Variables&quot;)</code></pre>
+<p><img src="airbnb_price_pred_nyc_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># dev.off() %&gt;% invisible()
+
+pred = predict(boost,n.trees = 500, newdata = test)
+submission &lt;- data.frame(id = test$id, price = exp(pred))
+write.csv(x = submission, file = &quot;Model 1 Predictions_Boosting.csv&quot;, row.names = FALSE)
+
+pred_train_bst &lt;- predict(boost, n.trees = 500, newdata = train)
+rmse.bst &lt;- RMSE(pred_train_bst, train$log.price)
+r2.bst &lt;- R2(pred_train_bst, train$log.price)</code></pre>
+</div>
+<div id="summary-table-of-model-performance" class="section level2">
+<h2>3-5. Summary Table of Model Performance</h2>
+<pre class="r"><code>smry.tbl &lt;- data.frame(Models = c(&quot;Multiple Linear Regression&quot;, &quot;Decision Tree with Tuning&quot;, &quot;Random Forest&quot;, &quot;Boosting Model&quot;),
+           RMSE = c(rmse.lr, rmse.tr, rmse.rf, rmse.bst) %&gt;% round(3),
+           `R2` = c(r2.lr, r2.tr, r2.rf, r2.bst) %&gt;% round(3))
+smry.tbl %&gt;% regulartable() %&gt;% autofit() #%&gt;% save_as_image(., &quot;./image/Fig_RMSEsmry.png&quot;)</code></pre>
+<template id="5e6b579c-b86c-48f7-bec8-215d218fcb68"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style><div class="tabwid"><style>.cl-f6e5528a{}.cl-f6de230c{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f6de3aa4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6de3acc{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6de7c94{width:48.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cb2{width:52.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cbc{width:150.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cc6{width:52.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cd0{width:48.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cda{width:150.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7ce4{width:52.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cee{width:150.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cf8{width:48.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7cf9{width:150.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7d02{width:48.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7d0c{width:52.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7d16{width:150.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7d20{width:48.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6de7d2a{width:52.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class='cl-f6e5528a'><thead><tr style="overflow-wrap:break-word;"><td class="cl-f6de7d16"><p class="cl-f6de3aa4"><span class="cl-f6de230c">Models</span></p></td><td class="cl-f6de7d2a"><p class="cl-f6de3acc"><span class="cl-f6de230c">RMSE</span></p></td><td class="cl-f6de7d20"><p class="cl-f6de3acc"><span class="cl-f6de230c">R2</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-f6de7cbc"><p class="cl-f6de3aa4"><span class="cl-f6de230c">Multiple Linear Regression</span></p></td><td class="cl-f6de7cb2"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.415</span></p></td><td class="cl-f6de7c94"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.622</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-f6de7cda"><p class="cl-f6de3aa4"><span class="cl-f6de230c">Decision Tree with Tuning</span></p></td><td class="cl-f6de7cc6"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.418</span></p></td><td class="cl-f6de7cd0"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.616</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-f6de7cee"><p class="cl-f6de3aa4"><span class="cl-f6de230c">Random Forest</span></p></td><td class="cl-f6de7ce4"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.175</span></p></td><td class="cl-f6de7cf8"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.942</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-f6de7cf9"><p class="cl-f6de3aa4"><span class="cl-f6de230c">Boosting Model</span></p></td><td class="cl-f6de7d0c"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.414</span></p></td><td class="cl-f6de7d02"><p class="cl-f6de3acc"><span class="cl-f6de230c">0.633</span></p></td></tr></tbody></table></div></template>
+<div class="flextable-shadow-host" id="3e633bdc-ec24-48e4-b50c-9a3ddb6540d6"></div>
+<script>
+var dest = document.getElementById("3e633bdc-ec24-48e4-b50c-9a3ddb6540d6");
+var template = document.getElementById("5e6b579c-b86c-48f7-bec8-215d218fcb68");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+
+<!-- End of Document -->
+</div>
+</div>
+
+
+<br><br>
+<footer>
+  <p class="copyright text-muted" align="center">Copyright &copy; 2020 Jisu Baek</p>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

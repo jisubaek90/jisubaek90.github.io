@@ -1,12 +1,46 @@
 ---
-title: "Section 3"
-author: "Jisu Baek"
-date: "10/12/2021"
-output: html_document
+pagetitle: "Section 3"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
 ---
 
----
-title: "Section 3"
----
-    
-Section 3
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+## **AirBnB Price Prediction using ML algorithms**
+
+<img src="badges/badge_r.svg" style="width:7.25%; border:0px solid; margin-right: 5px" align="left">
+
+<br><br>
+
+<p align="center">
+<img src="airbnb_price_pred_nyc_files/figure-html/unnamed-chunk-7-1.png" style="width:60%; border:0px solid; margin-right: 20px" align="center">
+<img src="airbnb_price_pred_nyc_files/figure-html/rmse_r2_table.png" style="width:40%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+#### R Code
+
+For the R code: [[Link](airbnb_price_pred_nyc.html)]
+
+<br>
+
+#### Analysis Report
+
+For the analysis report: [[Link](files/airbnb_price_pred_nyc/airbnb_price_pred_nyc_report.pdf)]
+
+<br>
+
+#### Presentation Slides
+
+For the presentation slides: [[Link](files/airbnb_price_pred_nyc/airbnb_price_pred_nyc_slide.pdf)]
+
+<br>
+
+#### Project Summary:

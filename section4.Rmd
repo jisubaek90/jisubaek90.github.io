@@ -1,12 +1,18 @@
 ---
-title: "Section 4"
-author: "Jisu Baek"
-date: "10/12/2021"
-output: html_document
+pagetitle: "Section 4"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
 ---
 
----
-title: "Section 4"
----
-    
-Section 4
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+### Section 4-1
+
+### Section 4-2

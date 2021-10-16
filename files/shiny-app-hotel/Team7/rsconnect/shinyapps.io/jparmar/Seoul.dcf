@@ -1,0 +1,13 @@
+name: Seoul
+title: Seoul
+username:
+account: jparmar
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4458974
+bundleId: 4898227
+url: https://jparmar.shinyapps.io/Seoul/
+when: 1628330731.63826
+lastSyncTime: 1628330731.6383
+asMultiple: FALSE
+asStatic: FALSE

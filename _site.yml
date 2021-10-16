@@ -7,14 +7,24 @@ output_dir: "."
 navbar:
   title: "Jisu Baek"
   left:
-    - text: "Section1"
-      href: section1.html
-    - text: "Section2"
-      href: section2.html
-    - text: "Section3"
-      href: section3.html
-    - text: "Section4"
-      href: section4.html
+    - text: "In a nutshell"
+      href: section6.html
+    - text: "Stat/Modeling"
+      menu: 
+      - text: "AirBnB Prediction Modeling"
+        href: section3.html
+      - text: "IBM Employee Retention Modeling"
+        href: section4.html
+    - text: "DB/SQL"
+      menu: 
+      - text: "Music Generator App"
+        href: section1.html
+      - text: "Hotel Service App"
+        href: section2.html
+    - text: "Visualization"
+      menu: 
+      - text: "Disney+ Strategic Dashboard"
+        href: section5.html
   right:
     - icon: fas fa-envelope
       href: contact.html
