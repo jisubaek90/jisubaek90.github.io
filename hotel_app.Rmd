@@ -29,7 +29,7 @@ For the live demo web application: [[Link](https://jparmar.shinyapps.io/Seoul/)]
 
 #### Presentation Slides
 
-For the presentation slides: [[Link](files/shiny-app-hotel/seoul_application.pdf)]
+For the presentation slides: [[Link](files/shiny_app_hotel/seoul_application.pdf)]
 
 <br>
 
