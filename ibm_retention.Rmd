@@ -1,0 +1,52 @@
+---
+pagetitle: "Section 4"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+## **IBM retention Prediction using ML algorithms**
+
+<img src="badges/badge_r.svg" style="width:7.25%; border:0px solid; margin-right: 5px" align="left">
+
+<br><br>
+
+<p align="center">
+<img src="files/IBM_retention_prediction/importance_of_features.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+
+<img src="files/IBM_retention_prediction/model_prediction.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+#### R Code
+
+For the R code: [[Link](files/IBM_retention_prediction/ibm_retention_report.html)]
+
+<br>
+
+#### Presentation Slides
+
+For the presentation slides: [[Link](files/IBM_retention_prediction/IBM_Tackling_Talent Retention.pdf)]
+
+<br>
+
+#### Project Summary:
+
+The goal of this project is to make a recommendation to reduce the employee attrition rate in IBM.<br>
+<br>
+<b>The project components include the following: </b><br>
+&nbsp; 1) Using machine learning to predict attrition <br>
+&nbsp; 2) Uncovering key factors that lead to attrition <br>
+&nbsp; 3) Create a persona that characterizes "high-risk" employees <br> 
+&nbsp; 4) Recommendation and limitation. <br>
+
+
+

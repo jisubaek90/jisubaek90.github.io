@@ -1,0 +1,15 @@
+---
+pagetitle: "Section 6"
+output:
+  html_document:
+    toc: false
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+ 
+<img src="photo/nutshell_fin.png" style="width:80%; border:0px solid; margin-right: 5px; margin-left: 60px;" align="center">
+
+
+<br>

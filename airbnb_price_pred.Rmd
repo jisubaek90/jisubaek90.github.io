@@ -1,0 +1,54 @@
+---
+pagetitle: "Section 3"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+## **AirBnB Price Prediction using ML algorithms**
+
+<img src="badges/badge_r.svg" style="width:7.25%; border:0px solid; margin-right: 5px" align="left">
+
+<br><br>
+
+<p align="center">
+<img src="files/airbnb_price_pred_nyc/varimp_airbnb.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+<img src="files/airbnb_price_pred_nyc/model_comparison.png" style="width:60%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+#### R Code
+
+For the R code: [[Link](files/airbnb_price_pred_nyc/airbnb_price_pred_nyc.html)]
+
+<br>
+
+#### Analysis Report
+
+For the analysis report: [[Link](files/airbnb_price_pred_nyc/airbnb_price_pred_nyc_report.pdf)]
+
+<br>
+
+#### Presentation Slides
+
+For the presentation slides: [[Link](files/airbnb_price_pred_nyc/airbnb_price_pred_nyc_slide.pdf)]
+
+<br>
+
+#### Project Summary:
+
+This project aims to predict the price for a rental accommodation using various features such as property, reviews, host, location, and so on. To build the best accurate model for price prediction, regression models, machine learning algorithms including random forest, decision tree, and boosting model were used. 
+
+<b> The project component includes the following: </b><br>
+&nbsp; 1) Data Cleaning <br>
+&nbsp; 2) Exploratory Data Analysis <br>
+&nbsp; 3) Predictive Modeling <br>
+&nbsp; 4) Evaluation, insights, and improvements <br> 

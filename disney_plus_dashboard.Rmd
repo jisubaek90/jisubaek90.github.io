@@ -1,0 +1,40 @@
+---
+pagetitle: "Section 5"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<br><br><br>
+
+## **Disney+ Strategic Dashboard**
+
+<img src="badges/badge_tableau.svg" style="width:18%; border:0px solid; margin-right: 5px" align="left">
+
+<br><br>
+
+#### Tableau Publication
+
+For the Tableau Software dashboard: [[Link](https://public.tableau.com/app/profile/jisu.baek/viz/InteractiveVisualCommunication_Final_JisuBaek/Dashboard1)]
+
+<br>
+
+<p align="center">
+<img src="photo/disneyplus_dashboard.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
+</p>
+<br>
+
+
+#### Project Summary:
+
+The goal of this project is to demonstrate the recommended strategic plan that Disney plus should pursue to win millennial customers and dominate the next paradigm of the streaming industry, using "Short-form contents" as a key.<br>
+<br>
+<b>The project component includes the following: </b><br>
+&nbsp;1) Target segment analysis <br>
+&nbsp;2) Strategic recommendation: Short-form contents <br>
