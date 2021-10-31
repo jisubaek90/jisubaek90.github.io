@@ -12,9 +12,9 @@ navbar:
     - text: "Stat/Modeling"
       menu: 
       - text: "AirBnB Prediction Modeling"
-        href: airbnb_price_pred.html
+        href: airbnb.html
       - text: "IBM Employee Retention Modeling"
-        href: ibm_retention.html
+        href: ibm.html
     - text: "DB/SQL"
       menu: 
       - text: "Hotel Service App"
@@ -22,7 +22,7 @@ navbar:
     - text: "Visualization"
       menu: 
       - text: "Disney+ Strategic Dashboard"
-        href: section5.html
+        href: disney_plus.html
   right:
     - icon: fas fa-envelope
       href: contact.html

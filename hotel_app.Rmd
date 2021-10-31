@@ -1,5 +1,5 @@
 ---
-pagetitle: "Section 2"
+pagetitle: "Hotel App"
 output:
   html_document:
     toc: true
@@ -29,7 +29,7 @@ For the live demo web application: [[Link](https://jparmar.shinyapps.io/Seoul/)]
 
 #### Presentation Slides
 
-For the presentation slides: [[Link](files/shiny-app-hotel/Seoul_application.pdf)]
+For the presentation slides: [[Link](files/shiny-app-hotel/seoul_application.pdf)]
 
 <br>
 
@@ -44,6 +44,6 @@ For the presentation slides: [[Link](files/shiny-app-hotel/Seoul_application.pdf
 The goal of this project is to create an application using hotel booking data. The application provides service to both customers and business. For the customer service, this application allows hotel booking service and delivery food ordering service near the hotel. For the business side, hotel booking analysis and insights are offered. <br>
 <br>
 <b>The project component includes the followings: </b><br>
-&nbsp; 1) Database creation(Normalize, ETL) <br>
+&nbsp; 1) Database creation (normalization, ETL) <br>
 &nbsp; 2) Data Analysis, using SQL and R <br>
 &nbsp; 3) Create an application using Shiny app in R
