@@ -13,7 +13,7 @@ output: html_document
 </p>
 <br>
 
-👋🏽 Hello! My name is Jisu and I live in NYC now.<br>
+👋🏽 Hello! My name is **Jisu Baek** and I live in NYC now.<br>
 
 🎓 Soon to be grad with a M.S. in Applied Analytics at Columbia University (May, 2022). Finished my B.B.A with an emphasis on Quantitative Methods at Sungkyunkwan University (Seoul, Korea).<br>
 
@@ -28,4 +28,10 @@ output: html_document
 
 💻 As for my future, I want to become a mind-mining project leader who can read customers' unmet needs from data and change the world. <br>
 
-🎹 In my free time, I love to row indoor, play the piano/keyboard, or jigsaw puzzles. 
+🎹 In my free time, I love to row indoors, play the piano/keyboard, or jigsaw puzzles. 
+
+<br>
+
+My full resume is available [here](/files/Resume_JisuBaek_202111.pdf).
+
+If you have additional questions, please feel free to reach out via [jb4563@columbia.edu](mailto:jb4563@columbia.edu) Thank you.

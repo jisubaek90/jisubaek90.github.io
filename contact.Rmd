@@ -1,14 +1,18 @@
 ---
-title: "contact"
+title: ""
 author: "Jisu Baek"
 date: 
 output: html_document
 ---
 
-#### <b>M.S. Candidate in Applied Analytics | Columbia University</b> <img src="photo/columbia_sps_logo.png" style="width:20%;" align="right">
 
-New York, NY 10025 <br>
-(917) 603 - 3213 <br>
-jisubaek90@gmail.com <br>
+<br><br><br><br><br><br>
+
+#### **Jisu Baek**
+##### M.S. Candidate in Applied Analytics | Columbia University <img src="photo/columbia_logo.jpeg" style="width:35%;" align="right">
+
+📍 New York, NY 10025 <br>
+📱 (917) 603 - 3213 <br>
+✉️ jb4563@columbia.edu <br>
 
     
