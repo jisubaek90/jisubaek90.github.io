@@ -1,5 +1,5 @@
 ---
-pagetitle: "Section 6"
+pagetitle: "Nutshell"
 output:
   html_document:
     toc: false
@@ -9,7 +9,7 @@ output:
 
 <br><br><br>
  
-<img src="photo/nutshell_fin.png" style="width:80%; border:0px solid; margin-right: 5px; margin-left: 60px;" align="center">
+<img src="photo/nutshell_jisu.png" style="width:80%; border:0px solid; margin-right: 5px; margin-left: 60px;" align="center">
 
 
 <br>

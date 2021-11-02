@@ -1,5 +1,5 @@
 ---
-pagetitle: "Section 4"
+pagetitle: "IBM"
 output:
   html_document:
     toc: true
