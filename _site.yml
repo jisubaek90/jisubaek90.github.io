@@ -26,10 +26,6 @@ navbar:
   right:
     - icon: fas fa-envelope
       href: contact.html
-    - icon: fab fa-github
-      href: http://github.com/jisubaek90
-    - icon: fab fa-twitter
-      href: https://twitter.com/jisubaek90
     - icon: fab fa-linkedin-in
       href: https://www.linkedin.com/in/jisubaek/
 output:
