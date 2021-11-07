@@ -20,8 +20,8 @@ output:
 <br><br>
 
 <p align="center">
-<img src="files/airbnb_price_pred_nyc/images/varimp_airbnb.png" style="width:80%; border:0px solid; margin-right: 20px" align="center">
-<img src="files/airbnb_price_pred_nyc/images/model_comparison.png" style="width:60%; border:0px solid; margin-right: 20px" align="center">
+<img src="files/airbnb_price_pred_nyc/images/varimp_airbnb.png" style="width:100%; border:0px solid; margin-right: 0px" align="center">
+<img src="files/airbnb_price_pred_nyc/images/model_comparison.png" style="width:60%; border:0px solid; margin-right: 0px" align="center">
 </p>
 <br>
 
