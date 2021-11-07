@@ -32,6 +32,6 @@ output: html_document
 
 <br>
 
-My full resume is available [here](/files/Resume_JisuBaek_202111.pdf).
+My full resume is available [here](files/Resume_JisuBaek_202111.pdf).
 
 If you have additional questions, please feel free to reach out via [jb4563@columbia.edu](mailto:jb4563@columbia.edu) Thank you.
