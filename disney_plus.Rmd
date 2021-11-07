@@ -19,7 +19,7 @@ output:
 
 <br><br>
 
-#### Tableau Publication
+#### Tableau Public
 
 For the Tableau Software dashboard: [[Link](https://public.tableau.com/app/profile/jisu.baek/viz/InteractiveVisualCommunication_Final_JisuBaek/Dashboard1)]
 
