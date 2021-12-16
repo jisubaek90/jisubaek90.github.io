@@ -24,7 +24,7 @@ output: html_document
 
 🔥 Aspire to become a leader and designer in data strategy, transformation, and growth to align to customer-centric focus in on/offline business.<br>
 
-👗 Previously, worked as a Data Analyst - Sales and Marketing at Lotte Department Store where I automated the publishing of KPI reports using real-time Tableau dashboards. Designed and implemented cross-selling strategy between cosmetics and female clothing by performing a Principal Component Analysis (PCA) and Market Basket analysis. Mostly worked on deeply diving into customer insights through data using R, SQL, and Microsoft Excel.<br>
+👗 Previously, worked as a Data Analyst - Sales and Marketing at Lotte Shopping Corporation where I automated the publishing of KPI reports using real-time Tableau dashboards. Designed and implemented cross-selling strategy between cosmetics and female clothing by performing a Principal Component Analysis (PCA) and Market Basket analysis. Mostly worked on deeply diving into customer insights through data using R, SQL, and Microsoft Excel.<br>
 
 💻 As for my future, I want to become a mind-mining project leader who can read customers' unmet needs from data and change the world. <br>
 
